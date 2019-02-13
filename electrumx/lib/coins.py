@@ -2640,3 +2640,33 @@ class MyriadcoinTestnet(Myriadcoin):
     WIF_BYTE = bytes.fromhex("ef")
     GENESIS_HASH = ('0000017ce2a79c8bddafbbe47c004aa9'
                     '2b20678c354b34085f62b762084b9788')
+
+class PKcoin(Coin):
+    NAME = "PKcoin"
+    SHORTNAME = "PKC"
+    NET = "mainnet"
+    GENESIS_HASH = ('49e9204ebe3c41ac0f2d5936b5d6ca39b17c72ea3bdd26d66d5131b19063e811')
+    TX_COUNT_HEIGHT = 2666
+    TX_COUNT = 4980
+    TX_PER_BLOCK = 2
+    RPC_PORT = 9332
+    DESERIALIZER = lib_tx.DeserializerSegWit
+    BASIC_HEADER_SIZE = 249
+    PEERS = [
+        '192.168.0.104 s t',
+        '127.0.0.1 s t',
+    ]
+    HEADER_VALUES = ('version', 'prev_block_hash', 'merkle_root', 'timestamp',
+                     'bits', 'nonce','cuckooNonce','cuckooNonces')
+    HEADER_UNPACK = struct.Struct('< I 32s 32s I I I I 165s').unpack_from
+
+    @classmethod
+    def block_header(cls,block,height):
+        return block[:249]
+    @classmethod
+    def electrum_header(cls, header, height):
+        h = super().electrum_header(header, height)
+        h['cuckooNonce'] = h['cuckooNonce']
+        h['cuckooNonces'] = hash_to_hex_str(h['cuckooNonces'])
+        return h
+
