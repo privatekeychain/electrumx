@@ -2645,7 +2645,7 @@ class PKcoin(Coin):
     NAME = "PKcoin"
     SHORTNAME = "PKC"
     NET = "mainnet"
-    GENESIS_HASH = ('49e9204ebe3c41ac0f2d5936b5d6ca39b17c72ea3bdd26d66d5131b19063e811')
+    GENESIS_HASH = ('884f6e34c0be9c236842cb54006a18b28d3490dfcc6ee18a0717c06fa5fd7919')
     TX_COUNT_HEIGHT = 2666
     TX_COUNT = 4980
     TX_PER_BLOCK = 2
@@ -2653,20 +2653,19 @@ class PKcoin(Coin):
     DESERIALIZER = lib_tx.DeserializerSegWit
     BASIC_HEADER_SIZE = 249
     PEERS = [
-        '192.168.0.104 s t',
         '127.0.0.1 s t',
     ]
     HEADER_VALUES = ('version', 'prev_block_hash', 'merkle_root', 'timestamp',
-                     'bits', 'nonce','cuckooNonce','cuckooNonces')
-    HEADER_UNPACK = struct.Struct('< I 32s 32s I I I I 165s').unpack_from
+                     'bits', 'nonce','cuckooNonces')
+    HEADER_UNPACK = struct.Struct('< I 32s 32s I I I 169s').unpack_from
 
     @classmethod
     def block_header(cls,block,height):
         return block[:249]
+
     @classmethod
     def electrum_header(cls, header, height):
         h = super().electrum_header(header, height)
-        h['cuckooNonce'] = h['cuckooNonce']
         h['cuckooNonces'] = hash_to_hex_str(h['cuckooNonces'])
         return h
 
