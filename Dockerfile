@@ -21,21 +21,17 @@ trusted-host=mirrors.aliyun.com\n' >> /root/.pip/pip.conf;
     
 RUN set -ex; \
     apk update; \
-    apk add --no-cache openssl bash build-base apache2-utils; \
+    apk add --no-cache openssl build-base apache2-utils; \
     apk add --no-cache --repository https://mirrors.aliyun.com/alpine/edge/community/ leveldb-dev; \
     pip install --upgrade pip; \
     pip install aiohttp pylru plyvel attrs; \
     pip install aiorpcX==0.10.4; \
-    apk del build-base;
-
-RUN set -ex; \
     cd /tmp; \
     openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj '/CN=www.mydom.com/O=My Company Name LTD./C=US'; \
     mkdir -p /etc/electrumx/; \
     mv key.pem /etc/electrumx/server.key; \
     mv cert.pem /etc/electrumx/server.crt; \
-    mkdir -p /db; \ 
-    mkdir -p /tmp/electrumx;
+    apk del build-base openssl;
 
 COPY . /tmp/electrumx
 
