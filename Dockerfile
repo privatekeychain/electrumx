@@ -37,12 +37,10 @@ RUN set -ex; \
     mkdir -p /db; \ 
     mkdir -p /tmp/electrumx;
 
-COPY ./latest.tar.gz /tmp/electrumx
+COPY . /tmp/electrumx
 
 RUN set -ex; \
     cd /tmp/electrumx; \
-    tar -xvzf latest.tar.gz; \
-    rm -rf latest.tar.gz; \
     python setup.py install_lib; \
     python setup.py install; \
     cd /tmp; \
