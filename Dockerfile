@@ -33,14 +33,14 @@ RUN set -ex; \
     mv cert.pem /etc/electrumx/server.crt; \
     apk del build-base openssl;
 
-COPY . /tmp/electrumx
+COPY . /env/electrumx
 
 RUN set -ex; \
-    cd /tmp/electrumx; \
+    cd /env/electrumx; \
     python setup.py install_lib; \
     python setup.py install; \
-    cd /tmp; \
-    rm -rf /tmp/electrumx
+    cd /env; \
+    rm -rf /env/electrumx
 
 # CMD /usr/local/bin/electrumx_server
 
